@@ -1,0 +1,3 @@
+Correct password: [('Top-Left', 0), ('Center', 2), ('Top-Right', 5), ('Center', 3), ('Bottom-Center', 0)]
+Attempted password: [('Top-Left', 0), ('Center', 2), ('Top-Right', 5), ('Center', 3), ('Bottom-Center', 0)]
+Correct Password

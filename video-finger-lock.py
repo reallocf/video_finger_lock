@@ -7,7 +7,7 @@ import os
 password = [("Center", 0), ("Top-Right", 5)]
 
 redThreshold = 150
-grayConversionThreshold = 80
+grayConversionThreshold = 70
 countedContourSize = 50
 
 topEdge = 250
@@ -41,7 +41,8 @@ def getLoc(x, y):
 if __name__ == "__main__":
     camera = cv2.VideoCapture(0)
     attemptTime = str(time.time())
-    os.mkdir("./imgs/attempt-" + attemptTime)
+    dirName = "./examples/attempt-" + attemptTime
+    os.mkdir(dirName)
     count = 0
     passwordAttempt = []
     while(True):
@@ -99,19 +100,24 @@ if __name__ == "__main__":
             cv2.putText(frame, "Location found: " + locFound, (25, 250), cv2.FONT_HERSHEY_COMPLEX, 0.8, (255, 0, 255), 2)
             cv2.drawContours(redAsWhiteFrame, fingerContours, -1, (0, 0, 255), 3)
 
-        cv2.imshow("Video Feed", frame)
+        cv2.imshow("Video Feed", redAsWhiteFrame)
         pressedKey = cv2.waitKey(1) & 0xFF
         if pressedKey == ord('q'):
             break
         if pressedKey == ord('f'):
             count += 1
             passwordAttempt.append((locFound, fingerContourCount))
-            cv2.imwrite("./imgs/attempt-" + attemptTime + "/cam-view-" + str(count) + ".jpg", frame)
-            cv2.imwrite("./imgs/attempt-" + attemptTime + "/mach-view-" + str(count) + ".jpg", redAsWhiteFrame)
+            cv2.imwrite(dirName + "/cam-view-" + str(count) + ".jpg", frame)
+            cv2.imwrite(dirName + "/mach-view-" + str(count) + ".jpg", redAsWhiteFrame)
         if pressedKey == ord('j'):
+            f = open(dirName + "/results.txt", "w")
+            f.write("Correct password: " + str(password) + "\n")
+            f.write("Attempted password: " + str(passwordAttempt) + "\n")
             if passwordAttempt == password:
+                f.write("Correct Password")
                 print("Correct Password")
             else:
+                f.write("Incorrect Password")
                 print("Incorrect Password")
             break
         # TODO

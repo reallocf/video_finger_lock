@@ -11,6 +11,7 @@ password = [("Top-Left", 0), ("Center", 2), ("Top-Right", 5), ("Center", 3), ("B
 redThreshold = 150
 grayConversionThreshold = 60
 countedContourSize = 50
+circleRadiusAdjustment = 0.38
 
 # Edge values, can be tuned to require more or less hand movement in order
 # to change the hand location
@@ -83,7 +84,7 @@ if __name__ == "__main__":
             x,y,w,h = cv2.boundingRect(contour)
             cv2.rectangle(redAsWhiteFrame,(x,y),(x+w,y+h),(0,255,0),2)
             # Create circle for finger counting
-            circleRadius = int(floor(max(w, h) * .38))
+            circleRadius = int(floor(max(w, h) * circleRadiusAdjustment))
             circleCircumference = 2 * np.pi * circleRadius
             centerX = x + (w / 2)
             centerY = y + (h / 2)
@@ -122,7 +123,7 @@ if __name__ == "__main__":
             cv2.drawContours(redAsWhiteFrame, fingerContours, -1, (0, 0, 255), 3)
 
         # Display video feed and wait for key capture
-        cv2.imshow("Video Feed", redAsWhiteFrame)
+        cv2.imshow("Video Feed", frame) # Change frame to redAsWhiteFrame to see what the computer sees
         pressedKey = cv2.waitKey(1) & 0xFF
         if pressedKey == ord('q'): # If q pressed - exit program
             break
